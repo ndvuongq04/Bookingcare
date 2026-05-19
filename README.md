@@ -1,139 +1,175 @@
 # Bookingcare
 
-Bookingcare là hệ thống đặt lịch khám bệnh gồm frontend React/Vite và backend Spring Boot. Dự án phục vụ bệnh nhân, bác sĩ, nhân viên hỗ trợ và quản trị viên trong các nghiệp vụ đặt lịch, quản lý phòng khám, hóa đơn và thống kê.
+Bookingcare la he thong dat lich kham benh gom backend Spring Boot va frontend React/Vite. Du an ho tro benh nhan tim bac si, phong kham, chuyen khoa, dat lich kham, xem hoa don; dong thoi cung cap dashboard quan tri cho admin, bac si va nhan vien ho tro.
 
-## Mục lục
+## Repo lien quan
 
-- [Giới thiệu](#giới-thiệu)
-- [Tính năng](#tính-năng)
-- [Yêu cầu hệ thống](#yêu-cầu-hệ-thống)
-- [Cài đặt](#cài-đặt)
-- [Hướng dẫn sử dụng](#hướng-dẫn-sử-dụng)
-- [Cấu hình](#cấu-hình)
-- [Đóng góp](#đóng-góp)
-- [Giấy phép](#giấy-phép)
+| Thanh phan | Duong dan |
+| --- | --- |
+| Backend API | https://github.com/ndvuongq04/be_booking-care |
+| Frontend Web | https://github.com/PhucPoo/FE_BookingCare |
+| GitHub root repo | https://github.com/ndvuongq04/Bookingcare |
 
-## Giới thiệu
+## Demo
 
-Repo này gồm hai ứng dụng chính:
+Hien repo chua co public demo URL duoc cau hinh san. Khi chay local:
 
-- `be_booking-care`: REST API Spring Boot cho xác thực, phân quyền, đặt lịch, phòng khám, bác sĩ, bệnh nhân, hóa đơn, phản hồi và thống kê.
-- `fe_booking-care`: giao diện React/Vite cho trang đặt lịch, dashboard quản trị, dashboard bác sĩ, dashboard phòng khám và các màn hình hỗ trợ vận hành.
+| Dich vu | URL |
+| --- | --- |
+| Frontend | http://localhost:5173 |
+| Backend | http://localhost:8080 |
+| API base | http://localhost:8080/api/v1 |
 
-## Tính năng
+Tai khoan demo duoc seed khi database rong:
 
-- Xác thực và phân quyền theo vai trò `ADMIN`, `DOCTOR`, `SUPPORT`, `CLIENT`.
-- Quản lý tài khoản, bệnh nhân, bác sĩ, phòng khám, chuyên khoa và dịch vụ.
-- Đặt lịch khám, cập nhật trạng thái lịch hẹn và xem khung giờ trống của bác sĩ.
-- Quản lý hóa đơn, hồ sơ khám bệnh, phản hồi và thông báo.
-- Dashboard thống kê doanh thu và lịch đặt thành công.
-- Gửi email OTP, xác thực đăng ký, quên mật khẩu và thông báo đặt/hủy lịch.
-- Upload và quản lý hình ảnh qua Cloudinary.
+```text
+Email: superAdmin01@gmail.com
+Password: 123456
+Role: ADMIN
+```
 
-## Yêu cầu hệ thống
+## Tinh nang chinh
+
+### Public / Khach vang lai
+
+- Xem trang chu, danh sach co so y te, bac si, chuyen khoa, bai viet va dich vu y te.
+- Xem chi tiet co so y te, chi tiet bac si, chi tiet chuyen khoa va dich vu kham chuyen khoa.
+- Tim kiem bac si, phong kham, chuyen khoa va dich vu.
+- Xem khung gio kham con trong cua bac si.
+- Dang ky tai khoan, xac thuc OTP qua email, dang nhap va quen mat khau.
+
+### CLIENT / Benh nhan
+
+- Cap nhat thong tin ca nhan va doi mat khau.
+- Dat lich kham voi bac si theo ngay va khung gio.
+- Xem danh sach lich kham ca nhan, xem chi tiet lich va huy lich khi can.
+- Xem danh sach hoa don/chi tiet hoa don cua minh.
+- Gui, cap nhat va xoa phan hoi cho bac si sau khi su dung dich vu.
+- Xem ho so kham benh lien quan den minh.
+
+### ADMIN
+
+- Xem dashboard thong ke doanh thu va so lich kham thanh cong theo ngay, thang, nam.
+- Quan ly tai khoan nguoi dung, bac si, nhan vien ho tro va benh nhan.
+- Quan ly phong kham, chuyen khoa va lien ket phong kham - chuyen khoa.
+- Quan ly dich vu y te.
+- Quan ly toan bo lich kham, tim kiem lich kham va cap nhat trang thai lich.
+- Quan ly hoa don va tra cuu hoa don.
+- Quan ly phan hoi, thong bao, ho so kham benh va cac danh muc he thong.
+
+### DOCTOR / Bac si
+
+- Xem dashboard bac si.
+- Xem, tim kiem va quan ly lich kham cua bac si.
+- Cap nhat trang thai lich kham.
+- Quan ly danh sach benh nhan phu trach.
+- Tao va cap nhat ho so kham benh.
+- Cap nhat thong tin ho so bac si.
+
+### SUPPORT / Nhan vien ho tro
+
+- Xem dashboard ho tro.
+- Xem va tim kiem lich kham theo phong kham.
+- Cap nhat trang thai lich kham trong pham vi ho tro.
+- Tao hoa don va quan ly hoa don theo phong kham.
+- Xem thong tin phong kham duoc gan va cap nhat thong tin ho tro.
+
+### He thong
+
+- Xac thuc bang JWT, refresh token va phan quyen theo role `ADMIN`, `DOCTOR`, `SUPPORT`, `CLIENT`.
+- Gui email OTP, quen mat khau, thong bao dat lich thanh cong va huy lich.
+- Upload va quan ly hinh anh qua Cloudinary.
+
+## Kien truc tong quan
+
+```mermaid
+flowchart LR
+    User[Benh nhan / Admin / Bac si / Support] --> FE[React + Vite frontend]
+    FE --> API[Spring Boot REST API]
+    API --> DB[(MySQL booking_care)]
+    API --> Mail[Gmail SMTP]
+    API --> Cloudinary[Cloudinary]
+```
+
+Backend expose REST API tai `/api/v1`. Frontend goi API bang Axios, luu thong tin dang nhap trong Zustand/local storage va cookie `access_token`, sau do dieu huong nguoi dung theo role.
+
+## Tech stack tong hop
+
+| Lop | Cong nghe |
+| --- | --- |
+| Frontend | React 19.1.1, TypeScript 5.8, Vite 7.1, React Router 7.8 |
+| UI | Ant Design 5, Tailwind CSS 4, React Icons, Swiper, React Slick |
+| State/API | Zustand, Axios, React Hook Form, React Toastify |
+| Chart | Chart.js, react-chartjs-2, Recharts, react-countup |
+| Backend | Java 17, Spring Boot 3.5.5, Spring Web, Spring Security, OAuth2 Resource Server |
+| Data | Spring Data JPA, Hibernate, MySQL 8 |
+| Email/template | Spring Mail, Thymeleaf |
+| Storage | Cloudinary |
+| Build | Maven Wrapper 3.9.11, npm |
+
+## Cau truc repo
+
+```text
+Bookingcare/
+|-- README.md
+|-- be_booking-care/
+|   |-- pom.xml
+|   |-- mvnw, mvnw.cmd
+|   |-- src/main/java/com/Booking_care/
+|   |-- src/main/resources/application.properties
+|   `-- src/test/java/
+`-- fe_booking-care/
+    |-- package.json
+    |-- vite.config.ts
+    |-- tsconfig*.json
+    |-- db.sql
+    `-- src/
+```
+
+## Chay local nhanh
+
+Yeu cau:
 
 - Java 17+
-- MySQL 8.0+
-- Node.js 20.19+ hoặc 22.12+ vì frontend dùng Vite 7
-- npm 10+ hoặc phiên bản đi kèm Node tương thích
-- Maven 3.6+ hoặc Maven Wrapper có sẵn trong `be_booking-care`
+- MySQL 8+
+- Node.js 20.19+ hoac 22.12+ cho Vite 7
+- npm 10+
 
-## Cài đặt
-
-Clone repo:
-
-```bash
-git clone https://github.com/ndvuongq04/Bookingcare.git
-cd Bookingcare
-```
-
-Cấu hình backend trong `be_booking-care/src/main/resources/application.properties`. Không commit secret thật khi dùng môi trường production.
-
-```properties
-spring.datasource.url=jdbc:mysql://localhost:3306/booking_care?createDatabaseIfNotExist=true&useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
-spring.datasource.username=root
-spring.datasource.password=your_mysql_password
-
-booking-care.jwt.base-secret=your_base64_secret
-
-booking-care.cloudinary.cloud_name=your_cloud_name
-booking-care.cloudinary.api_key=your_api_key
-booking-care.cloudinary.api_secret=your_api_secret
-
-spring.mail.username=your_email@gmail.com
-spring.mail.password=your_app_password
-```
-
-Chạy backend:
-
-```bash
-cd be_booking-care
-./mvnw spring-boot:run
-```
-
-Trên Windows PowerShell:
+Chay backend:
 
 ```powershell
 cd be_booking-care
 .\mvnw.cmd spring-boot:run
 ```
 
-Chạy frontend ở một terminal khác:
+Chay frontend o terminal khac:
 
-```bash
+```powershell
 cd fe_booking-care
 npm install
 npm run dev
 ```
 
-Mặc định:
+Mac dinh backend dung database `booking_care` tren MySQL local. Cau hinh chi tiet nam trong [be_booking-care/README.md](./be_booking-care/README.md).
 
-- Backend: `http://localhost:8080`
-- API base path: `http://localhost:8080/api/v1`
-- Frontend: `http://localhost:5173`
-- Database: `booking_care`
+## Cau truc deploy
 
-## Hướng dẫn sử dụng
+Repo hien chua co Dockerfile, docker-compose hoac script deploy san. Huong deploy phu hop voi code hien tai:
 
-Sau khi backend chạy lần đầu, `DatabaseInitialize` tự tạo các vai trò, một tài khoản admin mặc định, danh sách khung giờ và danh sách tỉnh/thành.
+| Thanh phan | Cach deploy de xuat |
+| --- | --- |
+| Frontend | `npm run build`, deploy folder `dist/` len Nginx, Vercel, Netlify hoac static hosting |
+| Backend | `.\mvnw.cmd clean package`, deploy file JAR trong `target/` len VPS/cloud/server Java 17 |
+| Database | MySQL 8, tao database `booking_care`, de JPA tao schema hoac import dump `fe_booking-care/db.sql` neu can data mau |
+| Secrets | Chuyen MySQL password, JWT secret, Gmail app password va Cloudinary credentials sang bien moi truong hoac secret manager |
 
-Tài khoản admin mặc định:
+## Tai lieu chi tiet
 
-```text
-Email: superAdmin01@gmail.com
-Password: 123456
-```
+- [Backend README](./be_booking-care/README.md)
+- [Frontend README](./fe_booking-care/README.md)
 
-Đăng nhập qua API:
+## Tac gia va lien he
 
-```bash
-curl -X POST http://localhost:8080/api/v1/auth/login \
-  -H "Content-Type: application/json" \
-  -d '{"email":"superAdmin01@gmail.com","password":"123456"}'
-```
-
-Lấy danh sách bác sĩ công khai:
-
-```bash
-curl "http://localhost:8080/api/v1/doctors?page=1&size=10"
-```
-
-Build frontend trước khi deploy:
-
-```bash
-cd fe_booking-care
-npm run build
-npm run preview
-```
-
-## Cấu hình
-
-Các file cấu hình chính:
-
-- Backend: `be_booking-care/src/main/resources/application.properties`
-- Frontend API client: `fe_booking-care/src/api/axios.ts`
-- Frontend API constant: `fe_booking-care/src/utils/constant.ts`
-- CORS backend: `be_booking-care/src/main/java/com/Booking_care/config/CorsConfig.java`
-- Security rules: `be_booking-care/src/main/java/com/Booking_care/config/SecurityConfig.java`
-
-Nếu đổi host hoặc port backend, cập nhật các URL `localhost:8080` trong frontend để trỏ đúng API.
+- GitHub: https://github.com/ndvuongq04
+- LinkedIn: https://www.linkedin.com/in/v%C6%B0%E1%BB%A3ng-nguy%E1%BB%85n-%C4%91%C3%ACnh-a6aa42397/
+- Email: nguyendinhvuong08122004@gmail.com
